@@ -8,6 +8,8 @@ import { airQualityFeed } from './feeds/airQuality.js';
 import { issFlyoversFeed } from './feeds/issFlyovers.js';
 import { superchargersFeed } from './feeds/superchargers.js';
 import { borderWaitsFeed } from './feeds/borderWaits.js';
+import { concertsFeed } from './feeds/concerts.js';
+import { animalMigrationsFeed } from './feeds/animalMigrations.js';
 
 export const CUSTOM_FEEDS = Object.freeze([
   f1CircuitsFeed,
@@ -19,4 +21,6 @@ export const CUSTOM_FEEDS = Object.freeze([
   issFlyoversFeed,
   superchargersFeed,
   borderWaitsFeed,
+  concertsFeed,
+  animalMigrationsFeed,
 ]);
