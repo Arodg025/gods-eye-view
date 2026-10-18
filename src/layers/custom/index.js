@@ -48,7 +48,7 @@ function defaultRenderRows(Cesium, rows, dataSource, feed) {
           outlineColor: Cesium.Color.BLACK.withAlpha(0.6),
           outlineWidth: 1,
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-          disableDepthTestDistance: Number.POSITIVE_INFINITY,
+          disableDepthTestDistance: 0,
         },
         label:
           row.label === false
@@ -62,7 +62,7 @@ function defaultRenderRows(Cesium, rows, dataSource, feed) {
                 style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                 pixelOffset: new Cesium.Cartesian2(0, -18),
                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-                disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                disableDepthTestDistance: 0,
                 distanceDisplayCondition: new Cesium.DistanceDisplayCondition(
                   0,
                   20_000_000,
