@@ -53,6 +53,16 @@ export const f1CircuitsFeed = {
         subtitle: `${c.circuit} · ${c.date}${isNext ? ' — NEXT RACE' : ''}`,
         colorCss: isNext ? '#ffd700' : isPast ? '#888888' : '#e10600',
         pointSize: isNext ? 14 : 8,
+        // The snapshot only carries name / circuit / date — no track length,
+        // turn count, or lap record, so those stay out rather than guessed.
+        details: [
+          { label: 'Circuit', value: c.circuit },
+          { label: 'Race date', value: c.date },
+          {
+            label: 'Status',
+            value: isNext ? 'Next race' : isPast ? 'Completed' : 'Upcoming',
+          },
+        ],
       };
     });
   },

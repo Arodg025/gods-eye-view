@@ -3,6 +3,8 @@
  * Live, keyless, CORS-enabled. Grid of [lon, lat, probability].
  */
 
+import { attachCustomHoverInfo } from '../index.js';
+
 const OVATION_URL = 'https://services.swpc.noaa.gov/json/ovation_aurora_latest.json';
 
 export const auroraFeed = {
@@ -34,7 +36,7 @@ export const auroraFeed = {
       const color = Cesium.Color.fromCssColorString(feed.colorCss).withAlpha(
         0.25 + intensity * 0.55,
       );
-      dataSource.entities.add(
+      const entity = dataSource.entities.add(
         new Cesium.Entity({
           id: `${feed.id}:${row.lon},${row.lat}`,
           position: Cesium.Cartesian3.fromDegrees(row.lon, row.lat),
@@ -47,6 +49,14 @@ export const auroraFeed = {
           properties: { title: 'Aurora', subtitle: `${row.prob}% probability` },
         }),
       );
+      attachCustomHoverInfo(entity, feed, {
+        title: 'Aurora',
+        subtitle: `${row.prob}% probability`,
+        details: [
+          { label: 'Probability', value: `${row.prob}%` },
+          { label: 'Source', value: 'NOAA SWPC OVATION' },
+        ],
+      });
     }
   },
 };

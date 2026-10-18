@@ -24,6 +24,19 @@ const PORTS = {
   '260401': { name: 'Nogales / Deconcini', lon: -110.94, lat: 31.33 },
 };
 
+/** One detail line for a single lane object — null when the feed reports nothing usable. */
+function laneDetail(lane, label) {
+  if (!lane) return null;
+  const status = (lane.operational_status || '').trim();
+  const delay = parseInt(lane.delay_minutes, 10);
+  const mins = Number.isFinite(delay) ? delay : null;
+  if (mins == null && (!status || status === 'N/A')) return null;
+  let value = mins == null ? status : mins === 0 ? 'No delay' : `${mins} min`;
+  const open = (lane.lanes_open || '').trim();
+  if (open) value += ` · ${open} lane${open === '1' ? '' : 's'} open`;
+  return { label, value };
+}
+
 function delayColor(min) {
   if (min == null) return '#888888';
   if (min < 15) return '#00e400';
@@ -50,6 +63,25 @@ export const borderWaitsFeed = {
       const std = lanes.standard_lanes || {};
       const delay = parseInt(std.delay_minutes, 10);
       const mins = Number.isFinite(delay) ? delay : null;
+      const details = [];
+      if (p.port_status) details.push({ label: 'Port status', value: p.port_status });
+      if (p.hours) details.push({ label: 'Hours', value: p.hours });
+      const stdDetail = laneDetail(lanes.standard_lanes, 'Standard vehicles');
+      if (stdDetail) details.push(stdDetail);
+      const nexusDetail = laneDetail(lanes.NEXUS_SENTRI_lanes, 'NEXUS / SENTRI');
+      if (nexusDetail) details.push(nexusDetail);
+      const commercialDetail = laneDetail(
+        p.commercial_vehicle_lanes?.standard_lanes,
+        'Commercial',
+      );
+      if (commercialDetail) details.push(commercialDetail);
+      const pedDetail = laneDetail(
+        p.pedestrian_lanes?.standard_lanes,
+        'Pedestrian',
+      );
+      if (pedDetail) details.push(pedDetail);
+      const updated = (std.update_time || '').trim();
+      if (updated) details.push({ label: 'Updated', value: updated });
       rows.push({
         id: p.port_number,
         lon: known.lon,
@@ -63,6 +95,7 @@ export const borderWaitsFeed = {
               : `${mins} min delay`,
         colorCss: delayColor(mins),
         pointSize: 10,
+        details,
       });
     }
     return rows;

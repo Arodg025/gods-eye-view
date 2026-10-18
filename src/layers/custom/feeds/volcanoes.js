@@ -78,6 +78,13 @@ export const volcanoesFeed = {
       title: `🌋 ${v.name}`,
       subtitle: v.country,
       pointSize: 9,
+      // Snapshot carries name / country / coords only — no alert level,
+      // elevation, type, or last eruption, so those stay out.
+      details: [
+        { label: 'Volcano', value: v.name },
+        { label: 'Country', value: v.country },
+        { label: 'Source', value: 'Smithsonian GVP (snapshot)' },
+      ],
     }));
   },
 };

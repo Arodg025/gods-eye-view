@@ -79,6 +79,12 @@ export const airQualityFeed = {
         subtitle: `US AQI ${c.aqi ?? 'n/a'} — ${aqiLabel(c.aqi)}`,
         colorCss: aqiColor(c.aqi),
         pointSize: 10,
+        details: [
+          { label: 'US AQI', value: c.aqi ?? 'n/a' },
+          { label: 'Category', value: aqiLabel(c.aqi) },
+          { label: 'Hour', value: `${nowHour.replace('T', ' ')} UTC` },
+          { label: 'Source', value: 'Open-Meteo' },
+        ],
       }));
   },
 };

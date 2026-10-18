@@ -62,14 +62,32 @@ export const animalMigrationsFeed = {
     const rows = [];
     for (const route of ROUTES) {
       route.waypoints.forEach(([lon, lat], i) => {
+        const isFirst = i === 0;
+        const isLast = i === route.waypoints.length - 1;
         rows.push({
           id: `${route.name}:${i}`,
           lon,
           lat,
-          title: i === 0 ? `🦈 ${route.name}` : route.name,
+          title: isFirst ? `🦈 ${route.name}` : route.name,
           subtitle: `${route.species} · ${route.program} · waypoint ${i + 1}/${route.waypoints.length}`,
-          pointSize: i === 0 ? 11 : 6,
-          label: i === 0,
+          pointSize: isFirst ? 11 : 6,
+          label: isFirst,
+          details: [
+            { label: 'Species', value: route.species },
+            { label: 'Program', value: route.program },
+            {
+              label: 'Waypoint',
+              value: `${i + 1} of ${route.waypoints.length}`,
+            },
+            {
+              label: 'Position',
+              value: isFirst
+                ? 'Route start'
+                : isLast
+                  ? 'Route end'
+                  : 'En route',
+            },
+          ],
         });
       });
     }

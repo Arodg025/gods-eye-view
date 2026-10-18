@@ -30,6 +30,13 @@ export const cflStadiumsFeed = {
       title: `🏈 ${s.team}`,
       subtitle: s.stadium,
       pointSize: 10,
+      // The static list only carries team + stadium — no capacity, opened
+      // year, or surface data, so the tooltip restates what the feed has.
+      details: [
+        { label: 'Team', value: s.team },
+        { label: 'Stadium', value: s.stadium },
+        { label: 'League', value: 'CFL' },
+      ],
     }));
   },
 };

@@ -16,10 +16,21 @@ function subpointAt(satrec, ms) {
   const pv = propagate(satrec, new Date(ms));
   if (!pv?.position) return null;
   const geo = eciToGeodetic(pv.position, gstime(new Date(ms)));
+  // ECI position magnitude is distance from Earth's centre; subtract the
+  // mean radius for altitude above the surface.
+  const altKm =
+    Math.hypot(pv.position.x, pv.position.y, pv.position.z) - 6371;
   return {
     lat: geo.latitude * R2D,
     lon: (((geo.longitude * R2D + 540) % 360) - 180),
+    altKm,
   };
+}
+
+/** 8-point compass label for a rise azimuth in degrees. */
+function compassDeg(deg) {
+  const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  return dirs[Math.round((((deg % 360) + 360) % 360) / 45) % 8];
 }
 
 function fmtTime(ms) {
@@ -58,6 +69,13 @@ export const issFlyoversFeed = {
         subtitle: 'Live position',
         pointSize: 12,
         colorCss: '#ffffff',
+        details: [
+          {
+            label: 'Altitude',
+            value: `~${Math.round(here.altKm)} km`,
+          },
+          { label: 'Source', value: 'CelesTrak TLE' },
+        ],
       });
     }
 
@@ -75,6 +93,7 @@ export const issFlyoversFeed = {
       if (!pass) break;
       const peak = subpointAt(satrec, pass.maxElevMs);
       if (peak) {
+        const durationMin = Math.round((pass.setMs - pass.riseMs) / 60000);
         rows.push({
           id: `iss-pass-${i}`,
           lon: peak.lon,
@@ -85,6 +104,19 @@ export const issFlyoversFeed = {
             `max ${Math.round(pass.maxElevDeg)}°${pass.visible ? ' · visible' : ''}`,
           pointSize: 10,
           colorCss: pass.visible ? '#7dff8a' : '#9db8d2',
+          details: [
+            { label: 'Rises', value: `${fmtTime(pass.riseMs)} (${compassDeg(pass.riseAzDeg)})` },
+            { label: 'Peak', value: `${fmtTime(pass.maxElevMs)} · ${Math.round(pass.maxElevDeg)}°` },
+            { label: 'Sets', value: fmtTime(pass.setMs) },
+            { label: 'Duration', value: `~${durationMin} min` },
+            {
+              label: 'Visible',
+              value: pass.visible
+                ? 'Yes — sunlit under a dark sky'
+                : 'No — daylight or in shadow',
+            },
+            { label: 'Observer', value: OBSERVER.name },
+          ],
         });
       }
       fromMs = pass.setMs + 60_000;

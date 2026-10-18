@@ -38,6 +38,29 @@ export const concertsFeed = {
       .filter((e) => e._embedded?.venues?.[0]?.location)
       .map((e) => {
         const v = e._embedded.venues[0];
+        const details = [];
+        const date = e.dates?.start?.localDate;
+        if (date) details.push({ label: 'Date', value: date });
+        const time = e.dates?.start?.localTime;
+        if (time) details.push({ label: 'Time', value: time });
+        if (v.name) details.push({ label: 'Venue', value: v.name });
+        const address = [v.address?.line1, v.city?.name, v.state?.stateCode]
+          .filter(Boolean)
+          .join(', ');
+        if (address) details.push({ label: 'Address', value: address });
+        const genre = e.classifications?.[0]?.genre?.name;
+        if (genre) details.push({ label: 'Genre', value: genre });
+        const price = e.priceRanges?.[0];
+        if (price?.min != null) {
+          const max =
+            price.max != null && price.max !== price.min
+              ? `–${price.max}`
+              : '';
+          details.push({
+            label: 'Tickets',
+            value: `${price.currency ?? ''} ${price.min}${max}`.trim(),
+          });
+        }
         return {
           id: e.id,
           lon: parseFloat(v.location.longitude),
@@ -45,6 +68,7 @@ export const concertsFeed = {
           title: `🎵 ${e.name}`,
           subtitle: `${v.name}, ${v.city?.name ?? ''} · ${e.dates?.start?.localDate ?? ''}`,
           pointSize: 9,
+          details,
         };
       });
   },

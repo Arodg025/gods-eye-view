@@ -51,6 +51,15 @@ export const meteorShowersFeed = {
         title: `☄️ ${s.name}`,
         subtitle: `Peak ${s.peak} · radiant overhead here at midnight · ZHR ~${s.zhr}`,
         pointSize: Math.min(16, 6 + s.zhr / 15),
+        details: [
+          { label: 'Peak night', value: s.peak },
+          { label: 'Zenithal hourly rate', value: `~${s.zhr}/hr` },
+          { label: 'Radiant', value: `RA ${s.ra}°, Dec ${s.dec}°` },
+          {
+            label: 'Where',
+            value: 'Radiant at zenith here at midnight on peak night',
+          },
+        ],
       };
     });
   },
