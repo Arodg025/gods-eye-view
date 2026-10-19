@@ -11,6 +11,8 @@
   ["custom-border-waits", "01"],
   ["custom-cfl-stadiums", "5"],
   ["custom-concerts", "02"],
+  ["custom-country-borders", "04"],
+  ["custom-disaster-alerts", "05"],
   ["custom-f1-circuits", "3"],
   ["custom-iss-flyovers", "9"],
   ["custom-meteor-showers", "4"],

@@ -600,6 +600,8 @@ export const LAYER_STATE_REGISTRY = Object.freeze([
   Object.freeze({ id: 'custom-border-waits', token: '01', disposition: 'enabled-only' }),
   Object.freeze({ id: 'custom-cfl-stadiums', token: '5', disposition: 'enabled-only' }),
   Object.freeze({ id: 'custom-concerts', token: '02', disposition: 'enabled-only' }),
+  Object.freeze({ id: 'custom-country-borders', token: '04', disposition: 'enabled-only' }),
+  Object.freeze({ id: 'custom-disaster-alerts', token: '05', disposition: 'enabled-only' }),
   Object.freeze({ id: 'custom-f1-circuits', token: '3', disposition: 'enabled-only' }),
   Object.freeze({ id: 'custom-iss-flyovers', token: '9', disposition: 'enabled-only' }),
   Object.freeze({ id: 'custom-meteor-showers', token: '4', disposition: 'enabled-only' }),

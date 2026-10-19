@@ -10,6 +10,8 @@ import { superchargersFeed } from './feeds/superchargers.js';
 import { borderWaitsFeed } from './feeds/borderWaits.js';
 import { concertsFeed } from './feeds/concerts.js';
 import { animalMigrationsFeed } from './feeds/animalMigrations.js';
+import { disasterAlertsFeed } from './feeds/disasterAlerts.js';
+import { countryBordersFeed } from './feeds/countryBorders.js';
 
 export const CUSTOM_FEEDS = Object.freeze([
   f1CircuitsFeed,
@@ -23,4 +25,6 @@ export const CUSTOM_FEEDS = Object.freeze([
   borderWaitsFeed,
   concertsFeed,
   animalMigrationsFeed,
+  disasterAlertsFeed,
+  countryBordersFeed,
 ]);
